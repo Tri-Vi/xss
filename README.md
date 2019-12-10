@@ -1,1 +1,2 @@
 # xss
+XSS attack preventions
