@@ -3,7 +3,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-app.get('/', function(req, res, next){
+app.get('/', sanizeInputForXSS, function(req, res, next){
   var name = req.query.name;
   res.render('index', {
     title: 'Home',
@@ -19,7 +19,10 @@ app.listen(process.env.PORT || 3000, function(err){
 });
 
 function sanitize(string){
-  return string.replace('<script>', '&lt;script&gt;');
+  str = string;
+  str = str.split('<script>').join("&lt;script&gt;");
+  str = str.split('</script>').join("/&lt;script&gt;");
+  return str;
 }
 
 function sanizeInputForXSS(req, res, next){
